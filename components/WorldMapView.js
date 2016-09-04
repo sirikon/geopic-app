@@ -68,7 +68,6 @@ class WorldMapView extends Component {
                     onRegionChange={this.onRegionChange()}
                 />
                 <View style={styles.cameraButtonContainer}>
-                    
                     {camera}
                     <TouchableOpacity activeOpacity={0.8} onPress={this.onCameraPress()}>
                         <View style={this.state.cameraActive ? styles.cameraButtonActive : styles.cameraButton}>
