@@ -10,6 +10,7 @@
     "react-native": "0.32.0",
     "react-native-camera": "git+https://github.com/lwansbrough/react-native-camera.git",
     "react-native-maps": "~0.8.0",
-    "react-native-vector-icons": "^2.1.0"
+    "react-native-vector-icons": "^2.1.0",
+    "redux": "^3.6.0"
   }
 }

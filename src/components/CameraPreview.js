@@ -12,9 +12,7 @@ class CameraPreview extends Component {
         if (!this.props.active) return null;
         return (
             <Camera
-                ref={(cam) => {
-                    this.camera = cam;
-                }}
+                ref={this.props.camRef}
                 style={styles.cameraPreview}
                 aspect={Camera.constants.Aspect.fill}>
             </Camera>
@@ -27,7 +25,8 @@ const styles = StyleSheet.create({
         width: Dimensions.get('window').width - 50,
         height: Dimensions.get('window').height - 70 - 80 - 45,
         marginBottom: 20,
-        borderRadius: 10
+        borderRadius: 10,
+        overflow: 'hidden'
     }
 });
 

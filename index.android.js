@@ -8,8 +8,7 @@ import React, { Component } from 'react';
 import {
   AppRegistry
 } from 'react-native';
-import LandingView from './components/LandingView';
-import WorldMapView from './components/WorldMapView';
+import WorldMapView from './src/components/WorldMapView';
 
 class geopic extends Component {
   render() {

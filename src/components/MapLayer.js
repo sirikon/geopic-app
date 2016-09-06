@@ -1,18 +1,28 @@
 import React, { Component } from 'react';
 import {
-  StyleSheet
+  StyleSheet,
+  Image
 } from 'react-native';
 
 import MapView from 'react-native-maps';
 
 class MapLayer extends Component {
     render() {
+        var picture = this.props.pictures[0];
+        if (!picture) return null;
         return (
             <MapView
                 style={styles.map}
                 region={this.props.region}
-                onRegionChange={this.props.onRegionChange}
-            />
+                onRegionChange={this.props.onRegionChange}>
+
+                {this.props.pictures.map(picture => (
+                    <MapView.Marker key={picture.id} coordinate={{latitude: picture.latitude, longitude: picture.longitude}}>
+                        
+                    </MapView.Marker>
+                ))}
+
+            </MapView>
         );
     }
 }

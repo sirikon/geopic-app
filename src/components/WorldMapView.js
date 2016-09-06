@@ -13,56 +13,61 @@ import Camera from 'react-native-camera';
 
 import MapLayer from './MapLayer';
 import CameraPreview from './CameraPreview';
-import CameraButton from './CameraButton';
+import CameraControls from './CameraControls';
+
+import worldMapStore from '../stores/worldMapStore';
+import worldMapActions from '../actions/worldMapActions';
 
 class WorldMapView extends Component {
     constructor() {
         super()
-        this.state = {
-            cameraActive: false,
-            region: {
-                latitude: 0,
-                longitude: 0,
-                latitudeDelta: 0.0922,
-                longitudeDelta: 0.0421,
-            }
-        };
-        this.geolocate();
+        worldMapStore.subscribe(() => this.worldMapStoreChange());
+        this.state = worldMapStore.getState();
+        worldMapActions.geolocate();
+        worldMapActions.getPictures();
     }
-    geolocate() {
-        navigator.geolocation.getCurrentPosition((position) => {
-            this.setState({region: {
-                latitude: position.coords.latitude,
-                longitude: position.coords.longitude,
-                latitudeDelta: 0.0922,
-                longitudeDelta: 0.0421
-            }});
-        }, (error) => { alert(JSON.stringify(error)) },
-        {enableHighAccuracy: false, timeout: 20000, maximumAge: 1000});
+    worldMapStoreChange() {
+        this.setState(worldMapStore.getState());
     }
     onRegionChange(region) {
-        return () => {
-            this.setState({ region: region });
+        worldMapActions.setRegion(region);
+    }
+    camRef() {
+        return (cam) => {
+            this.cam = cam;
         }
     }
+    takePicture() {
+        worldMapActions.takePictureAndUpload(this.cam);
+    }
     onCameraPress() {
-        return () => {
-            this.setState({ cameraActive: !this.state.cameraActive });
+        if (this.state.loading) return;
+        if (this.state.cameraActive) {
+            this.takePicture();
+        } else {
+            worldMapActions.setCameraActive(true);
         }
+    }
+    onCameraCancel() {
+        worldMapActions.setCameraActive(false);
     }
     render() {
         return (
             <View style={styles.mainContainer}>
                 <MapLayer
                     region={this.state.region}
-                    onRegionChange={this.onRegionChange()}
+                    pictures={this.state.pictures}
+                    onRegionChange={this.onRegionChange}
                 />
                 <CameraPreview
+                    camRef={this.camRef()}
                     active={this.state.cameraActive}
                 />
-                <CameraButton
+                <CameraControls
                     active={this.state.cameraActive}
-                    onPress={this.onCameraPress()}
+                    loading={this.state.loading}
+                    onPress={this.onCameraPress.bind(this)}
+                    onCancel={this.onCameraCancel.bind(this)}
                 />
             </View>
         );

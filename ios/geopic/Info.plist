@@ -40,14 +40,9 @@
     <string/>
     <key>NSAppTransportSecurity</key>
     <dict>
-      <key>NSExceptionDomains</key>
-      <dict>
-        <key>localhost</key>
-        <dict>
-          <key>NSTemporaryExceptionAllowsInsecureHTTPLoads</key>
-          <true/>
-        </dict>
-      </dict>
+      <!--Include to allow all connections (DANGER)-->
+      <key>NSAllowsArbitraryLoads</key>
+        <true/>
     </dict>
     <key>UIAppFonts</key>
     <array>
