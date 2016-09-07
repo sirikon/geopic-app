@@ -1,10 +1,6 @@
 import React, { Component } from 'react';
 import {
-  StyleSheet,
-  Image,
-  Text,
-  View,
-  ActivityIndicator
+  StyleSheet
 } from 'react-native';
 
 import MapView from 'react-native-maps';

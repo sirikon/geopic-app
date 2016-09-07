@@ -1,10 +1,5 @@
 import React, { Component } from 'react';
-import {
-  StyleSheet,
-  Image,
-  Text,
-  View
-} from 'react-native';
+import { StyleSheet } from 'react-native';
 
 import MapView from 'react-native-maps';
 

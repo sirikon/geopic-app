@@ -1,4 +1,5 @@
 import worldMapStore from '../stores/worldMapStore';
+import pictureService from '../services/pictureService';
 
 function geolocate() {
     navigator.geolocation.getCurrentPosition(geolocationSuccess, geolocationError,
@@ -33,49 +34,27 @@ function setRegion(region) {
 function takePictureAndUpload(camera) {
     camera.capture()
         .then((data) => {
+            setCameraActive(false);
+            setLoading(true);
             var currentRegion = worldMapStore.getState().region;
-            var location = currentRegion.latitude + ',' + currentRegion.longitude;
-            uploadPicture(data.path, location);
+            return pictureService.uploadPicture(data.path, currentRegion);
         })
-        .catch(err => console.error(err));
-}
-
-function uploadPicture(picturePath, location) {
-
-    setCameraActive(false);
-    setLoading(true);
-    var xhr = new XMLHttpRequest();
-
-    var picture = {
-        uri: picturePath,
-        type: 'image/jpeg',
-        name: 'picture.jpg'
-    };
-    
-    var body = new FormData();
-    body.append('picture', picture);
-    body.append('location', location);
-
-    xhr.onreadystatechange = function() {
-        if (xhr.readyState === 4) {
-            getPictures();
+        .then(() => {
+            return pictureService.getPictures();
+        })
+        .then((pictures) => {
+            setPictures(pictures);
             setLoading(false);
-        }
-    };
-    
-    xhr.open('POST', 'http://vps.sirikon.me:3000/api/pictures');
-    xhr.send(body);
+        })
+        .catch(err => {
+            setLoading(false);
+            //console.error(err)
+        });
 }
 
 function getPictures() {
-    return fetch('http://vps.sirikon.me:3000/api/pictures')
-        .then((response) => response.json())
-        .then((responseJson) => {
-            setPictures(responseJson);
-        })
-        .catch((error) => {
-            //console.error(error);
-        });
+    pictureService.getPictures()
+        .then(setPictures);
 }
 
 function setPictures(pictures) {

@@ -5,12 +5,15 @@ import {
     TouchableOpacity,
     ActivityIndicator
 } from 'react-native';
+
 import Icon from 'react-native-vector-icons/EvilIcons';
 
-
+/*
+ * Class CameraControls
+ * 'Shot' button and 'Cancel' button used below the CameraPreview
+ * */
 class CameraControls extends Component {
     render() {
-
         var shotButtonStyles = [styles.button, this.props.active ? styles.buttonActive : {}];
         var shotButtonIconStyles = [styles.icon, this.props.active ? styles.iconActive : {}];
 
@@ -25,7 +28,7 @@ class CameraControls extends Component {
             );
         }
 
-        var icon = this.props.loading ? 
+        var shotButtonIcon = this.props.loading ? 
             (<ActivityIndicator style={styles.loading} animating={true} size="large" color="white" />) :
             (<Icon style={styles.icon} name="camera" />);
 
@@ -34,7 +37,7 @@ class CameraControls extends Component {
                 <View style={styles.container}>
                     <TouchableOpacity activeOpacity={0.8} onPress={this.props.onPress}>
                         <View style={styles.button}>
-                            {icon}
+                            {shotButtonIcon}
                         </View>
                     </TouchableOpacity>
                     {cancelButton}
