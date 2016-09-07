@@ -26,7 +26,8 @@ class PictureMarker extends Component {
             <MapView.Marker
                 coordinate={{latitude: this.props.picture.latitude, longitude: this.props.picture.longitude}}
                 centerOffset={{x: 0, y: 100}}
-                onPress={this.markerPress.bind(this)}>
+                onPress={this.markerPress.bind(this)}
+                onSelect={this.markerPress.bind(this)}>
             </MapView.Marker>
         );
     }
