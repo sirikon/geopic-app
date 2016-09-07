@@ -1,21 +1,16 @@
-import worldMapStore from '../stores/worldMapStore';
+import worldMapReducer from '../reducers/worldMapReducer';
 import pictureService from '../services/pictureService';
 
 function geolocate() {
-    navigator.geolocation.getCurrentPosition(geolocationSuccess, geolocationError,
-    {enableHighAccuracy: false, timeout: 20000, maximumAge: 1000});
-}
-
-function geolocationSuccess(position) {
-    setLatLng(position.coords)
-}
-
-function geolocationError(error) {
-    alert('There was an error while trying to get the geolocation... sorry :(');
+    navigator.geolocation.getCurrentPosition((position) => {
+        setLatLng(position.coords);
+    }, () => {
+        alert('There was an error while trying to get the geolocation... sorry :(');
+    }, {enableHighAccuracy: false, timeout: 20000, maximumAge: 1000});
 }
 
 function setLatLng(latLng) {
-    var currentRegion = worldMapStore.getState().region;
+    var currentRegion = worldMapReducer.getState().region;
     setRegion({
         latitude: latLng.latitude,
         longitude: latLng.longitude,
@@ -25,7 +20,7 @@ function setLatLng(latLng) {
 }
 
 function setRegion(region) {
-    worldMapStore.dispatch({
+    worldMapReducer.dispatch({
         type: 'SET_REGION',
         region: region
     });
@@ -36,7 +31,7 @@ function takePictureAndUpload(camera) {
         .then((data) => {
             setCameraActive(false);
             setLoading(true);
-            var currentRegion = worldMapStore.getState().region;
+            var currentRegion = worldMapReducer.getState().region;
             return pictureService.uploadPicture(data.path, currentRegion);
         })
         .then(() => {
@@ -58,39 +53,41 @@ function getPictures() {
 }
 
 function setPictures(pictures) {
-    worldMapStore.dispatch({
+    worldMapReducer.dispatch({
         type: 'SET_PICTURES',
         pictures: pictures
     });
 }
 
 function setCameraActive(active) {
-    worldMapStore.dispatch({
+    worldMapReducer.dispatch({
         type: 'SET_CAMERA_ACTIVE',
         cameraActive: active
     });
 }
 
-function setLoading(loading) {
-    worldMapStore.dispatch({
-        type: 'SET_LOADING',
-        loading: loading
-    });
-}
-
 function setVisiblePicture(picture) {
-    worldMapStore.dispatch({
+    worldMapReducer.dispatch({
         type: 'SET_VISIBLE_PICTURE',
         picture: picture
     });
 }
 
+function setLoading(loading) {
+    worldMapReducer.dispatch({
+        type: 'SET_LOADING',
+        loading: loading
+    });
+}
+
 module.exports = {
     geolocate: geolocate,
+    setLatLng: setLatLng,    
     setRegion: setRegion,
     takePictureAndUpload: takePictureAndUpload,
     getPictures: getPictures,
+    setPictures: setPictures,
     setCameraActive: setCameraActive,
     setVisiblePicture: setVisiblePicture,
-    setLatLng: setLatLng
+    setLoading: setLoading
 };

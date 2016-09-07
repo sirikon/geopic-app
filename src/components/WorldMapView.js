@@ -17,19 +17,19 @@ import CameraPreview from './CameraPreview';
 import CameraControls from './CameraControls';
 import PictureViewer from './PictureViewer';
 
-import worldMapStore from '../stores/worldMapStore';
+import worldMapReducer from '../reducers/worldMapReducer';
 import worldMapActions from '../actions/worldMapActions';
 
 class WorldMapView extends Component {
     constructor() {
         super()
-        worldMapStore.subscribe(() => this.worldMapStoreChange());
-        this.state = worldMapStore.getState();
+        worldMapReducer.subscribe(() => this.worldMapReducerChange());
+        this.state = worldMapReducer.getState();
         worldMapActions.geolocate();
         worldMapActions.getPictures();
     }
-    worldMapStoreChange() {
-        this.setState(worldMapStore.getState());
+    worldMapReducerChange() {
+        this.setState(worldMapReducer.getState());
     }
     onRegionChange(region) {
         worldMapActions.setRegion(region);

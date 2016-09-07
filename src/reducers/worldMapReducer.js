@@ -1,5 +1,25 @@
 import { createStore } from 'redux';
 
+function worldMapReducer(state, action) {
+    switch(action.type) {
+        case '@@redux/INIT':
+            return createInitialState();
+        case 'SET_REGION':
+            return setRegion(state, action.region);
+        case 'SET_CAMERA_ACTIVE':
+            return setCameraActive(state, action.cameraActive);
+        case 'SET_LOADING':
+            return setLoading(state, action.loading);
+        case 'SET_PICTURES':
+            return setPictures(state, action.pictures);
+        case 'SET_VISIBLE_PICTURE':
+            return setVisiblePicture(state, action.picture);
+        default:
+            console.error('Unknown action ' + action.type);
+            return state;
+    }
+}
+
 function createInitialState() {
     return {
         cameraActive: false,
@@ -40,24 +60,4 @@ function setVisiblePicture(state, picture) {
     return state;
 }
 
-function worldMapStore(state, action) {
-    switch(action.type) {
-        case '@@redux/INIT':
-            return createInitialState();
-        case 'SET_REGION':
-            return setRegion(state, action.region);
-        case 'SET_CAMERA_ACTIVE':
-            return setCameraActive(state, action.cameraActive);
-        case 'SET_LOADING':
-            return setLoading(state, action.loading);
-        case 'SET_PICTURES':
-            return setPictures(state, action.pictures);
-        case 'SET_VISIBLE_PICTURE':
-            return setVisiblePicture(state, action.picture);
-        default:
-            console.error('Unknown action ' + action.type);
-            return state;
-    }
-}
-
-module.exports = createStore(worldMapStore)
+module.exports = createStore(worldMapReducer);
