@@ -5,6 +5,7 @@ function createInitialState() {
         cameraActive: false,
         loading: false,
         pictures: [],
+        visiblePicture: null,
         region: {
             latitude: 0,
             longitude: 0,
@@ -34,6 +35,11 @@ function setPictures(state, pictures) {
     return state;
 }
 
+function setVisiblePicture(state, picture) {
+    state.visiblePicture = picture;
+    return state;
+}
+
 function worldMapStore(state, action) {
     switch(action.type) {
         case '@@redux/INIT':
@@ -46,6 +52,8 @@ function worldMapStore(state, action) {
             return setLoading(state, action.loading);
         case 'SET_PICTURES':
             return setPictures(state, action.pictures);
+        case 'SET_VISIBLE_PICTURE':
+            return setVisiblePicture(state, action.picture);
         default:
             console.error('Unknown action ' + action.type);
             return state;

@@ -6,18 +6,21 @@ function geolocate() {
 }
 
 function geolocationSuccess(position) {
-    var region = {
-        latitude: position.coords.latitude,
-        longitude: position.coords.longitude,
-        latitudeDelta: 0.0922,
-        longitudeDelta: 0.0421
-    };
-    setRegion(region);
+    setLatLng(position.coords)
 }
 
 function geolocationError(error) {
     alert('There was an error while trying to get the geolocation... sorry :(');
-    console.error(error);
+}
+
+function setLatLng(latLng) {
+    var currentRegion = worldMapStore.getState().region;
+    setRegion({
+        latitude: latLng.latitude,
+        longitude: latLng.longitude,
+        latitudeDelta: currentRegion.latitudeDelta,
+        longitudeDelta: currentRegion.longitudeDelta,
+    });
 }
 
 function setRegion(region) {
@@ -71,7 +74,7 @@ function getPictures() {
             setPictures(responseJson);
         })
         .catch((error) => {
-            console.error(error);
+            //console.error(error);
         });
 }
 
@@ -96,10 +99,19 @@ function setLoading(loading) {
     });
 }
 
+function setVisiblePicture(picture) {
+    worldMapStore.dispatch({
+        type: 'SET_VISIBLE_PICTURE',
+        picture: picture
+    });
+}
+
 module.exports = {
     geolocate: geolocate,
     setRegion: setRegion,
     takePictureAndUpload: takePictureAndUpload,
     getPictures: getPictures,
-    setCameraActive: setCameraActive
+    setCameraActive: setCameraActive,
+    setVisiblePicture: setVisiblePicture,
+    setLatLng: setLatLng
 };

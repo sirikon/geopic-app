@@ -8,12 +8,14 @@ import {
   Geolocation,
   Dimensions
 } from 'react-native';
+
 import Icon from 'react-native-vector-icons/EvilIcons';
 import Camera from 'react-native-camera';
 
 import MapLayer from './MapLayer';
 import CameraPreview from './CameraPreview';
 import CameraControls from './CameraControls';
+import PictureViewer from './PictureViewer';
 
 import worldMapStore from '../stores/worldMapStore';
 import worldMapActions from '../actions/worldMapActions';
@@ -52,6 +54,10 @@ class WorldMapView extends Component {
         worldMapActions.setCameraActive(false);
     }
     render() {
+        var pictureViewer = null;
+        if (this.state.visiblePicture) {
+            pictureViewer = (<PictureViewer picture={this.state.visiblePicture} />);
+        }
         return (
             <View style={styles.mainContainer}>
                 <MapLayer
@@ -69,12 +75,20 @@ class WorldMapView extends Component {
                     onPress={this.onCameraPress.bind(this)}
                     onCancel={this.onCameraCancel.bind(this)}
                 />
+                {pictureViewer}
             </View>
         );
     }
 }
 
 const styles = StyleSheet.create({
+    photoBrowser: {
+        position: 'absolute',
+        top: 0,
+        right: 0,
+        bottom: 0,
+        left: 0
+    },
     mainContainer: {
         position: 'absolute',
         top: 0,

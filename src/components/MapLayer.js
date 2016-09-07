@@ -1,15 +1,17 @@
 import React, { Component } from 'react';
 import {
   StyleSheet,
-  Image
+  Image,
+  Text,
+  View
 } from 'react-native';
 
 import MapView from 'react-native-maps';
 
+import PictureMarker from './PictureMarker';
+
 class MapLayer extends Component {
     render() {
-        var picture = this.props.pictures[0];
-        if (!picture) return null;
         return (
             <MapView
                 style={styles.map}
@@ -17,9 +19,7 @@ class MapLayer extends Component {
                 onRegionChange={this.props.onRegionChange}>
 
                 {this.props.pictures.map(picture => (
-                    <MapView.Marker key={picture.id} coordinate={{latitude: picture.latitude, longitude: picture.longitude}}>
-                        
-                    </MapView.Marker>
+                    <PictureMarker key={picture.id} picture={picture} />
                 ))}
 
             </MapView>
